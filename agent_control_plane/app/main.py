@@ -4,8 +4,6 @@ import json
 from datetime import datetime
 
 from fastapi import Depends, FastAPI, HTTPException, Query
-from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session, select
 
 from .db import create_db, get_session
@@ -20,14 +18,7 @@ from .schemas import (
     TaskCreateFromEmail,
 )
 
-
 app = FastAPI(title="ARX Agent Control Plane API", version="0.1.0")
-app.mount("/static", StaticFiles(directory="agent_control_plane/app/static"), name="static")
-
-
-@app.get("/")
-def webapp() -> FileResponse:
-    return FileResponse("agent_control_plane/app/static/index.html")
 
 
 @app.on_event("startup")
@@ -209,34 +200,6 @@ def capabilities_rescan(session: Session = Depends(get_session)):
     session.commit()
     return {"ok": True, "version": snapshot.version}
 
-
-
-
-@app.get("/capabilities/insights")
-def capabilities_insights(session: Session = Depends(get_session)):
-    snapshots = session.exec(
-        select(CapabilitySnapshot).order_by(CapabilitySnapshot.created_at.desc())
-    ).all()
-    if not snapshots:
-        return {
-            "latest_version": None,
-            "total_snapshots": 0,
-            "learned_pages": 0,
-            "learned_actions": 0,
-            "recent_versions": [],
-        }
-
-    latest = snapshots[0]
-    manifest = json.loads(latest.manifest_json)
-    pages = manifest.get("pages", [])
-    learned_actions = sum(len(page.get("actions", [])) for page in pages)
-    return {
-        "latest_version": latest.version,
-        "total_snapshots": len(snapshots),
-        "learned_pages": len(pages),
-        "learned_actions": learned_actions,
-        "recent_versions": [item.version for item in snapshots[:5]],
-    }
 
 @app.get("/settings")
 def get_settings(tenant_id: str, session: Session = Depends(get_session)):

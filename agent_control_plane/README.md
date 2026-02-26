@@ -38,34 +38,14 @@ pip install -e .[dev]
 uvicorn app.main:app --reload
 ```
 
-Åbn derefter:
+## Test
 
-- Webapp UI: `http://127.0.0.1:8000/`
-- API docs: `http://127.0.0.1:8000/docs`
+```bash
+pytest -q
+```
 
-## LearnAlyze login og credentials
+## Bemærkninger
 
-- I UI findes en **LearnAlyze Login Window** sektion.
-- LearnAlyze embeds ikke længere i iframe (for at undgå browser-fejlsiden), fordi target-sitet blokerer framing via sikkerhedsheaders.
-- Du åbner i stedet `https://app-eu-learnalyze.azurewebsites.net/` i nyt vindue/tab direkte fra UI.
-- Du kan gemme **email** i browser session storage som login-hjælp (password gemmes ikke).
-- Kravet fastholdes: LearnAlyze login er stadig manuelt (`require_manual_learnalyze_login=true`).
-
-## Agent learning/selv-opdagelse
-
-UI viser nu en dedikeret "How the agent works + what it learned" sektion baseret på:
-
-- `GET /capabilities/insights` (snapshot count, learned pages/actions, recent versions)
-- `GET /capabilities/latest` (seneste manifest)
-
-## API (udsnit)
-
-- `GET/POST /emails`
-- `POST /tasks/from-email`
-- `POST /jobs/plan/{task_id}`
-- `GET /jobs`, `POST /jobs/{id}/abort`, `POST /jobs/{id}/retry`
-- `POST /approvals/{id}/approve|reject`
-- `GET /audit`
-- `GET /capabilities/latest`, `POST /capabilities/rescan`, `GET /capabilities/insights`
-- `GET/POST /settings`
-- `GET /agent/manifest`, `POST /agent/dispatch`
+- Persistence er SQLite for MVP.
+- Manifest-rescan bruger en demo-generator; i produktion erstattes med pull fra webappens capability manifest.
+- Dispatch-endpointet er bevidst generisk/stabilt for self-discovery designet.
