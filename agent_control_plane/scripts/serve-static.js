@@ -75,6 +75,7 @@ http.createServer((req, res) => {
     return proxyToBackend(req, res);
   }
 
+http.createServer((req, res) => {
   let reqPath = req.url === '/' ? '/index.html' : req.url;
   if (reqPath.startsWith('/static/')) reqPath = reqPath.replace('/static', '');
   const filePath = path.normalize(path.join(root, reqPath));

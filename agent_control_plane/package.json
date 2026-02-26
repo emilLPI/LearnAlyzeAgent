@@ -7,5 +7,6 @@
     "dev": "node scripts/serve-static.js",
     "start": "node scripts/serve-static.js",
     "dev:full": "node scripts/dev-stack.js"
+    "start": "node scripts/serve-static.js"
   }
 }

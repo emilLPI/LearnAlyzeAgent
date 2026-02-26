@@ -118,6 +118,7 @@ def classify_email(subject: str, body: str) -> tuple[str, str, float, RiskLevel]
     if ai_result is not None:
         return ai_result
 
+def classify_email(subject: str, body: str) -> tuple[str, str, float, RiskLevel]:
     text = f"{subject} {body}".lower()
     if "opret kunde" in text or "new customer" in text:
         return "create customer", "Detected customer onboarding keywords", 0.93, RiskLevel.low

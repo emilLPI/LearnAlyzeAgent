@@ -123,3 +123,14 @@ npm run dev:full
 
 Then open: `http://localhost:5173` (HTTP, not HTTPS).
 
+## Test
+
+```bash
+pytest -q
+```
+
+## Bemærkninger
+
+- Persistence er SQLite for MVP.
+- Manifest-rescan bruger en demo-generator; i produktion erstattes med pull fra webappens capability manifest.
+- Dispatch-endpointet er bevidst generisk/stabilt for self-discovery designet.

@@ -54,6 +54,9 @@ npm run dev
 ## Full backend option (single server)
 
 If you prefer running only FastAPI (no npm static server), use:
+## Full backend option
+
+If you want API + UI from FastAPI instead of the static npm flow:
 
 ```bash
 cd agent_control_plane

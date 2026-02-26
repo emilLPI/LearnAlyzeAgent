@@ -17,6 +17,12 @@ from .logic import (
     latest_manifest,
     plan_job,
 )
+
+from fastapi import Depends, FastAPI, HTTPException, Query
+from sqlmodel import Session, select
+
+from .db import create_db, get_session
+from .logic import create_task_from_email, ensure_default_settings, latest_manifest, plan_job
 from .models import Approval, AuditLog, CapabilitySnapshot, EmailNormalized, Job, JobStatus, Settings, Task
 from .schemas import (
     ApprovalDecision,
@@ -37,6 +43,7 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 @app.get("/")
 def webapp() -> FileResponse:
     return FileResponse(str(STATIC_DIR / "index.html"))
+app = FastAPI(title="ARX Agent Control Plane API", version="0.1.0")
 
 
 @app.on_event("startup")
