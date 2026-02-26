@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import json
+import os
+import urllib.error
+import urllib.request
 from datetime import datetime
 
 from sqlmodel import Session, select
@@ -18,6 +21,102 @@ from .models import (
     Task,
 )
 
+
+
+def get_ai_integration_status() -> dict[str, str | bool]:
+    return {
+        "provider": os.getenv("AI_PROVIDER", "openai-compatible"),
+        "base_url": os.getenv("AI_BASE_URL", "https://api.openai.com/v1"),
+        "model": os.getenv("AI_MODEL", "gpt-4o-mini"),
+        "api_key_configured": bool(os.getenv("AI_API_KEY")),
+    }
+
+
+def _parse_json_object(raw: str) -> dict | None:
+    value = raw.strip()
+    if value.startswith("```"):
+        value = value.strip("`")
+        if value.startswith("json"):
+            value = value[4:].strip()
+    start = value.find("{")
+    end = value.rfind("}")
+    if start == -1 or end == -1 or end <= start:
+        return None
+    try:
+        return json.loads(value[start:end + 1])
+    except json.JSONDecodeError:
+        return None
+
+
+def classify_email_with_ai(subject: str, body: str) -> tuple[str, str, float, RiskLevel] | None:
+    status = get_ai_integration_status()
+    api_key = os.getenv("AI_API_KEY")
+    if not api_key:
+        return None
+
+    prompt = (
+        "You classify support emails into an automation intent. "
+        "Return strict JSON with keys: intent (string), why (string), confidence (0..1 number), "
+        "risk (one of low, medium, high)."
+    )
+    payload = {
+        "model": status["model"],
+        "messages": [
+            {"role": "system", "content": prompt},
+            {"role": "user", "content": f"Subject: {subject}\nBody: {body}"},
+        ],
+        "temperature": 0.1,
+    }
+
+    req = urllib.request.Request(
+        f"{status['base_url'].rstrip('/')}/chat/completions",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+        },
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(req, timeout=10) as response:
+            raw = json.loads(response.read().decode("utf-8"))
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+        return None
+
+    try:
+        content = raw["choices"][0]["message"]["content"]
+    except (KeyError, IndexError, TypeError):
+        return None
+
+    parsed = _parse_json_object(content)
+    if not parsed:
+        return None
+
+    risk_raw = str(parsed.get("risk", "low")).lower()
+    risk = RiskLevel.low
+    if risk_raw == "medium":
+        risk = RiskLevel.medium
+    if risk_raw == "high":
+        risk = RiskLevel.high
+
+    try:
+        confidence = float(parsed.get("confidence", 0.6))
+    except (TypeError, ValueError):
+        confidence = 0.6
+
+    return (
+        str(parsed.get("intent", "needs triage")),
+        str(parsed.get("why", "AI classification")),
+        max(0.0, min(confidence, 1.0)),
+        risk,
+    )
+
+
+def classify_email(subject: str, body: str) -> tuple[str, str, float, RiskLevel]:
+    ai_result = classify_email_with_ai(subject, body)
+    if ai_result is not None:
+        return ai_result
 
 def classify_email(subject: str, body: str) -> tuple[str, str, float, RiskLevel]:
     text = f"{subject} {body}".lower()

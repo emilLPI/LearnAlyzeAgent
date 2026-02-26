@@ -9,6 +9,8 @@
   "scripts": {
     "dev": "npm run dev --workspace agent_control_plane",
     "start": "npm run start --workspace agent_control_plane",
+    "ui:install": "npm install --workspace agent_control_plane",
+    "dev:full": "npm run dev:full --workspace agent_control_plane"
     "ui:install": "npm install --workspace agent_control_plane"
   }
 }

@@ -18,6 +18,7 @@
           <a href="#learning">Agent Learning</a>
           <a href="#capabilities">Capabilities</a>
           <a href="#settings">Settings</a>
+          <a href="#ai-integration">AI Integration</a>
         </nav>
         <div class="notice">
           <strong>Policy:</strong>
@@ -32,6 +33,7 @@
           <div class="badge-row">
             <span class="badge">Autonomy: Supervised</span>
             <span class="badge">Kill Switch: OFF</span>
+            <span class="badge error" id="api-status">Checking API...</span>
           </div>
         </header>
 
@@ -121,6 +123,16 @@
           </div>
           <pre id="settings-output">No actions yet.</pre>
         </section>
+
+        <section id="ai-integration" class="card">
+          <h3>AI Integration Setup</h3>
+          <p class="subtle">Configure AI via environment variables in the backend terminal. API keys are never stored in UI settings.</p>
+          <div class="actions">
+            <button id="refresh-ai-status">Refresh AI Status</button>
+          </div>
+          <pre id="ai-output">No AI status loaded yet.</pre>
+        </section>
+
       </main>
     </div>
 

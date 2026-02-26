@@ -153,3 +153,16 @@ pre {
   .kpis { grid-template-columns: 1fr 1fr; }
   .credential-grid { grid-template-columns: 1fr; }
 }
+
+
+.badge.ok {
+  border-color: #2f8f63;
+  background: #133828;
+  color: #9ff2c7;
+}
+
+.badge.error {
+  border-color: #8d3c4e;
+  background: #3c1620;
+  color: #ffc5d3;
+}

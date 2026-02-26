@@ -2,6 +2,21 @@ from __future__ import annotations
 
 import json
 from datetime import datetime
+from pathlib import Path
+
+from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+from sqlmodel import Session, select
+
+from .db import create_db, get_session
+from .logic import (
+    create_task_from_email,
+    ensure_default_settings,
+    get_ai_integration_status,
+    latest_manifest,
+    plan_job,
+)
 
 from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Session, select
@@ -18,6 +33,16 @@ from .schemas import (
     TaskCreateFromEmail,
 )
 
+
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+
+app = FastAPI(title="ARX Agent Control Plane API", version="0.1.0")
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+
+@app.get("/")
+def webapp() -> FileResponse:
+    return FileResponse(str(STATIC_DIR / "index.html"))
 app = FastAPI(title="ARX Agent Control Plane API", version="0.1.0")
 
 
@@ -199,6 +224,47 @@ def capabilities_rescan(session: Session = Depends(get_session)):
     session.add(snapshot)
     session.commit()
     return {"ok": True, "version": snapshot.version}
+
+
+
+
+@app.get("/capabilities/insights")
+def capabilities_insights(session: Session = Depends(get_session)):
+    snapshots = session.exec(
+        select(CapabilitySnapshot).order_by(CapabilitySnapshot.created_at.desc())
+    ).all()
+    if not snapshots:
+        return {
+            "latest_version": None,
+            "total_snapshots": 0,
+            "learned_pages": 0,
+            "learned_actions": 0,
+            "recent_versions": [],
+        }
+
+    latest = snapshots[0]
+    manifest = json.loads(latest.manifest_json)
+    pages = manifest.get("pages", [])
+    learned_actions = sum(len(page.get("actions", [])) for page in pages)
+    return {
+        "latest_version": latest.version,
+        "total_snapshots": len(snapshots),
+        "learned_pages": len(pages),
+        "learned_actions": learned_actions,
+        "recent_versions": [item.version for item in snapshots[:5]],
+    }
+
+@app.get("/ai/integration/status")
+def ai_integration_status():
+    status = get_ai_integration_status()
+    return {
+        **status,
+        "setup": {
+            "required_env": ["AI_API_KEY"],
+            "optional_env": ["AI_PROVIDER", "AI_BASE_URL", "AI_MODEL"],
+        },
+        "note": "If AI_API_KEY is missing, classifier falls back to local rule-based logic.",
+    }
 
 
 @app.get("/settings")
