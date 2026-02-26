@@ -18,10 +18,3 @@ cd agent_control_plane
 npm install
 npm run dev
 ```
-
-
-Se også `read.md` for en kort fejlfindingsguide til `npm install`/`npm run dev`.
-
-Tip: Når `npm run dev` viser `ARX UI available at http://localhost:5173`, så kører serveren korrekt.
-Hold terminalen åben og åbn URL'en i din browser. Stop med `Ctrl + C`.
-

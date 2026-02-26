@@ -1,4 +1,2 @@
 __pycache__/
 *.pyc
-node_modules/
-agent_control_plane/node_modules/
