@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ARX Agent Control Plane</title>
+    <link rel="stylesheet" href="/static/css/app.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <h1>ARX Control Plane</h1>
+        <p>Operational AI with guardrails.</p>
+        <nav>
+          <a href="#learnalyze-window">LearnAlyze Window</a>
+          <a href="#inbox">Inbox</a>
+          <a href="#jobs">Jobs</a>
+          <a href="#learning">Agent Learning</a>
+          <a href="#capabilities">Capabilities</a>
+          <a href="#settings">Settings</a>
+        </nav>
+        <div class="notice">
+          <strong>Policy:</strong>
+          <span>LearnAlyze login stays manual.</span>
+          <span>Outlook connection is allowed.</span>
+        </div>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <h2>Agent Operations Dashboard</h2>
+          <div class="badge-row">
+            <span class="badge">Autonomy: Supervised</span>
+            <span class="badge">Kill Switch: OFF</span>
+          </div>
+        </header>
+
+        <section class="kpis">
+          <div class="kpi"><span>Success Rate</span><strong id="kpi-success">--</strong></div>
+          <div class="kpi"><span>Pending Jobs</span><strong id="kpi-pending">--</strong></div>
+          <div class="kpi"><span>Approvals Needed</span><strong id="kpi-approvals">--</strong></div>
+          <div class="kpi"><span>Learned Actions</span><strong id="kpi-learned-actions">--</strong></div>
+        </section>
+
+        <section id="learnalyze-window" class="card">
+          <h3>LearnAlyze Login Window</h3>
+          <p class="subtle">You can enter credentials here (session-only in browser) and open the real LearnAlyze app window.</p>
+          <div class="credential-grid">
+            <label>
+              Email
+              <input id="learnalyze-email" type="email" placeholder="you@company.com" autocomplete="username" />
+            </label>
+            <label>
+              Password
+              <input id="learnalyze-password" type="password" placeholder="••••••••" autocomplete="current-password" />
+            </label>
+          </div>
+          <div class="actions">
+            <button id="open-learnalyze-window">Open LearnAlyze Login Window</button>
+            <button id="save-local-credentials">Save credentials in browser session</button>
+            <button id="clear-local-credentials" class="secondary">Clear credentials</button>
+          </div>
+          <p id="learnalyze-status" class="subtle">No credentials saved yet.</p>
+          <div class="embed-blocked-panel">
+            <strong>Why there is no embedded window</strong>
+            <p>
+              LearnAlyze sets security headers (X-Frame-Options/CSP frame-ancestors) that block embedding in iframes.
+              To prevent the browser error page, this control plane always opens LearnAlyze in a separate tab/window.
+            </p>
+            <a class="external-link" href="https://app-eu-learnalyze.azurewebsites.net/" target="_blank" rel="noopener noreferrer">Open LearnAlyze directly</a>
+          </div>
+        </section>
+
+        <section id="inbox" class="card">
+          <h3>Inbox → Tasks</h3>
+          <div class="actions">
+            <button id="seed-email">Seed Demo Email</button>
+            <button id="triage-latest">Triage Latest Email</button>
+          </div>
+          <pre id="emails-output">No actions yet.</pre>
+        </section>
+
+        <section id="jobs" class="card">
+          <h3>Jobs</h3>
+          <div class="actions">
+            <button id="plan-latest">Plan Job for Latest Task</button>
+            <button id="list-jobs">Refresh Jobs</button>
+          </div>
+          <pre id="jobs-output">No actions yet.</pre>
+        </section>
+
+        <section id="learning" class="card">
+          <h3>How the agent works + what it learned</h3>
+          <div class="actions">
+            <button id="refresh-learning">Refresh Learning Insights</button>
+          </div>
+          <div class="timeline" id="agent-flow-timeline">
+            <div><strong>1.</strong> Email arrives and gets normalized/triaged.</div>
+            <div><strong>2.</strong> Task proposal generated with intent, confidence, and risk.</div>
+            <div><strong>3.</strong> Planner builds steps from discovered capabilities.</div>
+            <div><strong>4.</strong> Policy engine gates high-risk steps for approval.</div>
+            <div><strong>5.</strong> Execution runs via dispatch/UI fallback and logs everything.</div>
+          </div>
+          <pre id="learning-output">No learning insight loaded yet.</pre>
+        </section>
+
+        <section id="capabilities" class="card">
+          <h3>Capabilities</h3>
+          <div class="actions">
+            <button id="rescan-capabilities">Force Rescan</button>
+            <button id="latest-capabilities">Latest Manifest</button>
+          </div>
+          <pre id="cap-output">No actions yet.</pre>
+        </section>
+
+        <section id="settings" class="card">
+          <h3>Settings</h3>
+          <div class="actions">
+            <button id="save-settings">Save Outlook + Manual Login Rule</button>
+            <button id="get-settings">Read Settings</button>
+          </div>
+          <pre id="settings-output">No actions yet.</pre>
+        </section>
+      </main>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>

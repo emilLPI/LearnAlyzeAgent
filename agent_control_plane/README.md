@@ -1,20 +1,35 @@
-# ARX Agent Control Plane (MVP)
+# ARX Agent Control Plane (MVP Webapp)
 
-Dette er en kørende MVP-backend, der implementerer kerne-delene af den specificerede ARX Agent Control Plane:
+Nu kan du både:
 
-- Email ingestion og triage (`/emails`, `/tasks/from-email`)
-- Planning/job orchestration (`/jobs`, `/jobs/plan/{task_id}`)
-- Approvals (`/approvals/{id}/approve|reject`)
-- Audit stream (`/audit`)
-- Capability self-discovery (`/capabilities/latest`, `/capabilities/rescan`, `/agent/manifest`)
-- Generic action dispatch gateway (`/agent/dispatch`)
-- Tenant settings for autonomy/scopes/policies + kill switch (`/settings`)
+1. Køre UI med npm.
+2. Åbne og se LearnAlyze-vinduet direkte fra control plane UI.
+3. Se et tydeligt "what the agent learned" overblik (capability insights).
 
-## Vigtig forretningsregel implementeret
+## Kør webapp med npm
 
-Platform-login til LearnAlyze holdes **manuelt** på brugersiden (`require_manual_learnalyze_login=true` som default), mens Outlook-forbindelse kan sættes i settings (`outlook_connected=true`).
+### Fra repo-roden (fix for ENOENT/package.json)
 
-## Kør lokalt
+Hvis du står i repo-roden (som i din PowerShell fejl), kan du nu køre direkte:
+
+```bash
+npm install
+npm run dev
+```
+
+Dette bruger root `package.json` og starter UI-workspace automatisk.
+
+### Direkte i app-mappen
+
+```bash
+cd agent_control_plane
+npm install
+npm run dev
+```
+
+Åbn derefter: `http://127.0.0.1:5173`
+
+## Kør fuld backend + webapp via FastAPI
 
 ```bash
 cd agent_control_plane
