@@ -1,6 +1,10 @@
 # ARX Agent Control Plane (MVP Webapp)
 
-Nu kan du køre UI direkte via **npm** i terminalen.
+Nu kan du både:
+
+1. Køre UI med npm.
+2. Åbne og se LearnAlyze-vinduet direkte fra control plane UI.
+3. Se et tydeligt "what the agent learned" overblik (capability insights).
 
 ## Kør webapp med npm
 
@@ -11,8 +15,6 @@ npm run dev
 ```
 
 Åbn derefter: `http://127.0.0.1:5173`
-
-> NPM-varianten server UI (`app/static`) som frontend-preview.
 
 ## Kør fuld backend + webapp via FastAPI
 
@@ -28,9 +30,19 @@ uvicorn app.main:app --reload
 - Webapp UI: `http://127.0.0.1:8000/`
 - API docs: `http://127.0.0.1:8000/docs`
 
-## Vigtig forretningsregel implementeret
+## LearnAlyze login og credentials
 
-LearnAlyze login holdes manuelt (`require_manual_learnalyze_login=true`), mens Outlook connection kan aktiveres (`outlook_connected=true`).
+- I UI findes en **LearnAlyze Login Window** sektion.
+- Du kan åbne `https://app-eu-learnalyze.azurewebsites.net/` i nyt vindue/tab direkte derfra.
+- Du kan indtaste credentials i UI-felter og gemme dem i **browser session storage** (kun lokalt i din session) som hjælp til manuel login.
+- Kravet fastholdes: LearnAlyze login er stadig manuelt (`require_manual_learnalyze_login=true`).
+
+## Agent learning/selv-opdagelse
+
+UI viser nu en dedikeret "How the agent works + what it learned" sektion baseret på:
+
+- `GET /capabilities/insights` (snapshot count, learned pages/actions, recent versions)
+- `GET /capabilities/latest` (seneste manifest)
 
 ## API (udsnit)
 
@@ -40,6 +52,6 @@ LearnAlyze login holdes manuelt (`require_manual_learnalyze_login=true`), mens O
 - `GET /jobs`, `POST /jobs/{id}/abort`, `POST /jobs/{id}/retry`
 - `POST /approvals/{id}/approve|reject`
 - `GET /audit`
-- `GET /capabilities/latest`, `POST /capabilities/rescan`
+- `GET /capabilities/latest`, `POST /capabilities/rescan`, `GET /capabilities/insights`
 - `GET/POST /settings`
 - `GET /agent/manifest`, `POST /agent/dispatch`

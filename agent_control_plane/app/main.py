@@ -210,6 +210,34 @@ def capabilities_rescan(session: Session = Depends(get_session)):
     return {"ok": True, "version": snapshot.version}
 
 
+
+
+@app.get("/capabilities/insights")
+def capabilities_insights(session: Session = Depends(get_session)):
+    snapshots = session.exec(
+        select(CapabilitySnapshot).order_by(CapabilitySnapshot.created_at.desc())
+    ).all()
+    if not snapshots:
+        return {
+            "latest_version": None,
+            "total_snapshots": 0,
+            "learned_pages": 0,
+            "learned_actions": 0,
+            "recent_versions": [],
+        }
+
+    latest = snapshots[0]
+    manifest = json.loads(latest.manifest_json)
+    pages = manifest.get("pages", [])
+    learned_actions = sum(len(page.get("actions", [])) for page in pages)
+    return {
+        "latest_version": latest.version,
+        "total_snapshots": len(snapshots),
+        "learned_pages": len(pages),
+        "learned_actions": learned_actions,
+        "recent_versions": [item.version for item in snapshots[:5]],
+    }
+
 @app.get("/settings")
 def get_settings(tenant_id: str, session: Session = Depends(get_session)):
     return ensure_default_settings(session, tenant_id)

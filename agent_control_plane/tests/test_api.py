@@ -53,3 +53,15 @@ def test_webapp_root_is_served():
     response = client.get("/")
     assert response.status_code == 200
     assert "ARX Agent Control Plane" in response.text
+
+
+def test_capability_insights_endpoint():
+    bootstrap = client.get("/capabilities/insights")
+    assert bootstrap.status_code == 200
+    assert bootstrap.json()["total_snapshots"] >= 0
+
+    client.post("/capabilities/rescan")
+    after = client.get("/capabilities/insights")
+    assert after.status_code == 200
+    assert after.json()["total_snapshots"] >= 1
+    assert "learned_actions" in after.json()

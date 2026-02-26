@@ -24,7 +24,59 @@ async function refreshKpis() {
   $("kpi-success").textContent = `${Math.round((success / total) * 100)}%`;
   $("kpi-pending").textContent = `${pending}`;
   $("kpi-approvals").textContent = `${approvals}`;
+
+  const learning = await api("/capabilities/insights");
+  $("kpi-learned-actions").textContent = `${learning.data?.learned_actions ?? 0}`;
 }
+
+async function refreshLearningInsights() {
+  const [insights, latest] = await Promise.all([
+    api("/capabilities/insights"),
+    api("/capabilities/latest"),
+  ]);
+  write("learning-output", {
+    insights: insights.data,
+    latest_manifest_pages: latest.data?.pages?.map((p) => ({
+      id: p.id,
+      route: p.route,
+      actions: (p.actions || []).map((a) => a.id),
+    })),
+  });
+}
+
+function loadCredentialInputs() {
+  const email = sessionStorage.getItem("learnalyze_email") || "";
+  const password = sessionStorage.getItem("learnalyze_password") || "";
+  $("learnalyze-email").value = email;
+  $("learnalyze-password").value = password;
+  $("learnalyze-status").textContent = email
+    ? `Credentials loaded for ${email} (saved in browser session only).`
+    : "No credentials saved yet.";
+}
+
+$("save-local-credentials").onclick = () => {
+  const email = $("learnalyze-email").value.trim();
+  const password = $("learnalyze-password").value;
+  sessionStorage.setItem("learnalyze_email", email);
+  sessionStorage.setItem("learnalyze_password", password);
+  $("learnalyze-status").textContent = email
+    ? `Credentials saved locally for ${email}. Open LearnAlyze window and log in manually.`
+    : "Please enter email first.";
+};
+
+$("clear-local-credentials").onclick = () => {
+  sessionStorage.removeItem("learnalyze_email");
+  sessionStorage.removeItem("learnalyze_password");
+  $("learnalyze-email").value = "";
+  $("learnalyze-password").value = "";
+  $("learnalyze-status").textContent = "Credentials cleared from browser session.";
+};
+
+$("open-learnalyze-window").onclick = () => {
+  window.open("https://app-eu-learnalyze.azurewebsites.net/", "_blank", "noopener,noreferrer");
+  $("learnalyze-status").textContent =
+    "LearnAlyze opened in a new tab/window. Log in with your credentials there.";
+};
 
 $("seed-email").onclick = async () => {
   const payload = {
@@ -57,8 +109,13 @@ $("list-jobs").onclick = async () => {
   write("jobs-output", await api("/jobs"));
   await refreshKpis();
 };
-$("rescan-capabilities").onclick = async () => write("cap-output", await api("/capabilities/rescan", { method: "POST" }));
+$("rescan-capabilities").onclick = async () => {
+  write("cap-output", await api("/capabilities/rescan", { method: "POST" }));
+  await refreshKpis();
+  await refreshLearningInsights();
+};
 $("latest-capabilities").onclick = async () => write("cap-output", await api("/capabilities/latest"));
+$("refresh-learning").onclick = refreshLearningInsights;
 
 $("save-settings").onclick = async () => {
   const payload = {
@@ -75,4 +132,6 @@ $("save-settings").onclick = async () => {
 
 $("get-settings").onclick = async () => write("settings-output", await api("/settings?tenant_id=tenant-ui"));
 
+loadCredentialInputs();
 refreshKpis();
+refreshLearningInsights();

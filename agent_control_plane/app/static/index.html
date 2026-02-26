@@ -12,8 +12,10 @@
         <h1>ARX Control Plane</h1>
         <p>Operational AI with guardrails.</p>
         <nav>
+          <a href="#learnalyze-window">LearnAlyze Window</a>
           <a href="#inbox">Inbox</a>
           <a href="#jobs">Jobs</a>
+          <a href="#learning">Agent Learning</a>
           <a href="#capabilities">Capabilities</a>
           <a href="#settings">Settings</a>
         </nav>
@@ -37,6 +39,35 @@
           <div class="kpi"><span>Success Rate</span><strong id="kpi-success">--</strong></div>
           <div class="kpi"><span>Pending Jobs</span><strong id="kpi-pending">--</strong></div>
           <div class="kpi"><span>Approvals Needed</span><strong id="kpi-approvals">--</strong></div>
+          <div class="kpi"><span>Learned Actions</span><strong id="kpi-learned-actions">--</strong></div>
+        </section>
+
+        <section id="learnalyze-window" class="card">
+          <h3>LearnAlyze Login Window</h3>
+          <p class="subtle">You can enter credentials here (session-only in browser) and open the real LearnAlyze app window.</p>
+          <div class="credential-grid">
+            <label>
+              Email
+              <input id="learnalyze-email" type="email" placeholder="you@company.com" autocomplete="username" />
+            </label>
+            <label>
+              Password
+              <input id="learnalyze-password" type="password" placeholder="••••••••" autocomplete="current-password" />
+            </label>
+          </div>
+          <div class="actions">
+            <button id="open-learnalyze-window">Open LearnAlyze Login Window</button>
+            <button id="save-local-credentials">Save credentials in browser session</button>
+            <button id="clear-local-credentials" class="secondary">Clear credentials</button>
+          </div>
+          <p id="learnalyze-status" class="subtle">No credentials saved yet.</p>
+          <iframe
+            id="learnalyze-iframe"
+            title="LearnAlyze"
+            src="https://app-eu-learnalyze.azurewebsites.net/"
+            referrerpolicy="no-referrer"
+          ></iframe>
+          <p class="subtle">If the embedded window is blocked by browser security (X-Frame-Options), use "Open LearnAlyze Login Window".</p>
         </section>
 
         <section id="inbox" class="card">
@@ -55,6 +86,21 @@
             <button id="list-jobs">Refresh Jobs</button>
           </div>
           <pre id="jobs-output">No actions yet.</pre>
+        </section>
+
+        <section id="learning" class="card">
+          <h3>How the agent works + what it learned</h3>
+          <div class="actions">
+            <button id="refresh-learning">Refresh Learning Insights</button>
+          </div>
+          <div class="timeline" id="agent-flow-timeline">
+            <div><strong>1.</strong> Email arrives and gets normalized/triaged.</div>
+            <div><strong>2.</strong> Task proposal generated with intent, confidence, and risk.</div>
+            <div><strong>3.</strong> Planner builds steps from discovered capabilities.</div>
+            <div><strong>4.</strong> Policy engine gates high-risk steps for approval.</div>
+            <div><strong>5.</strong> Execution runs via dispatch/UI fallback and logs everything.</div>
+          </div>
+          <pre id="learning-output">No learning insight loaded yet.</pre>
         </section>
 
         <section id="capabilities" class="card">
