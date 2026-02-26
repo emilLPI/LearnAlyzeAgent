@@ -1,17 +1,20 @@
 # ARX Agent Control Plane (MVP Webapp)
 
-Dette er nu en **kørende webapp** (ikke kun API), så du kan åbne den i browseren og styre flowet:
+Nu kan du køre UI direkte via **npm** i terminalen.
 
-- Inbox (emails → tasks)
-- Jobs (plan/retry/abort)
-- Capabilities (rescan/latest)
-- Settings (Outlook connect + manuel LearnAlyze login-regel)
+## Kør webapp med npm
 
-## Vigtig forretningsregel implementeret
+```bash
+cd agent_control_plane
+npm install
+npm run dev
+```
 
-Platform-login til LearnAlyze holdes **manuelt** på brugersiden (`require_manual_learnalyze_login=true`), mens Outlook-forbindelse kan sættes i settings (`outlook_connected=true`).
+Åbn derefter: `http://127.0.0.1:5173`
 
-## Kør lokalt
+> NPM-varianten server UI (`app/static`) som frontend-preview.
+
+## Kør fuld backend + webapp via FastAPI
 
 ```bash
 cd agent_control_plane
@@ -20,10 +23,14 @@ pip install -e .[dev]
 uvicorn app.main:app --reload
 ```
 
-Åbn derefter i browser:
+Åbn derefter:
 
 - Webapp UI: `http://127.0.0.1:8000/`
 - API docs: `http://127.0.0.1:8000/docs`
+
+## Vigtig forretningsregel implementeret
+
+LearnAlyze login holdes manuelt (`require_manual_learnalyze_login=true`), mens Outlook connection kan aktiveres (`outlook_connected=true`).
 
 ## API (udsnit)
 
@@ -36,9 +43,3 @@ uvicorn app.main:app --reload
 - `GET /capabilities/latest`, `POST /capabilities/rescan`
 - `GET/POST /settings`
 - `GET /agent/manifest`, `POST /agent/dispatch`
-
-## Test
-
-```bash
-pytest -q
-```

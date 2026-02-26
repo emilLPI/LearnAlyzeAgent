@@ -7,52 +7,75 @@
     <link rel="stylesheet" href="/static/css/app.css" />
   </head>
   <body>
-    <header>
-      <h1>ARX Agent Control Plane</h1>
-      <p>Web UI for inbox, jobs, approvals, capabilities, audit, and settings.</p>
-    </header>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <h1>ARX Control Plane</h1>
+        <p>Operational AI with guardrails.</p>
+        <nav>
+          <a href="#inbox">Inbox</a>
+          <a href="#jobs">Jobs</a>
+          <a href="#capabilities">Capabilities</a>
+          <a href="#settings">Settings</a>
+        </nav>
+        <div class="notice">
+          <strong>Policy:</strong>
+          <span>LearnAlyze login stays manual.</span>
+          <span>Outlook connection is allowed.</span>
+        </div>
+      </aside>
 
-    <main>
-      <section class="card">
-        <h2>Quick Start</h2>
-        <ol>
-          <li>Connect Outlook in Settings.</li>
-          <li>Keep LearnAlyze login manual (required).</li>
-          <li>Ingest an email and triage it into a task.</li>
-          <li>Plan and run a job with policy/approval guardrails.</li>
-        </ol>
-      </section>
+      <main>
+        <header class="topbar">
+          <h2>Agent Operations Dashboard</h2>
+          <div class="badge-row">
+            <span class="badge">Autonomy: Supervised</span>
+            <span class="badge">Kill Switch: OFF</span>
+          </div>
+        </header>
 
-      <section class="grid">
-        <article class="card">
-          <h3>Inbox</h3>
-          <button id="seed-email">Seed Demo Email</button>
-          <button id="triage-latest">Triage Latest Email</button>
-          <pre id="emails-output"></pre>
-        </article>
+        <section class="kpis">
+          <div class="kpi"><span>Success Rate</span><strong id="kpi-success">--</strong></div>
+          <div class="kpi"><span>Pending Jobs</span><strong id="kpi-pending">--</strong></div>
+          <div class="kpi"><span>Approvals Needed</span><strong id="kpi-approvals">--</strong></div>
+        </section>
 
-        <article class="card">
+        <section id="inbox" class="card">
+          <h3>Inbox → Tasks</h3>
+          <div class="actions">
+            <button id="seed-email">Seed Demo Email</button>
+            <button id="triage-latest">Triage Latest Email</button>
+          </div>
+          <pre id="emails-output">No actions yet.</pre>
+        </section>
+
+        <section id="jobs" class="card">
           <h3>Jobs</h3>
-          <button id="plan-latest">Plan Job for Latest Task</button>
-          <button id="list-jobs">Refresh Jobs</button>
-          <pre id="jobs-output"></pre>
-        </article>
+          <div class="actions">
+            <button id="plan-latest">Plan Job for Latest Task</button>
+            <button id="list-jobs">Refresh Jobs</button>
+          </div>
+          <pre id="jobs-output">No actions yet.</pre>
+        </section>
 
-        <article class="card">
+        <section id="capabilities" class="card">
           <h3>Capabilities</h3>
-          <button id="rescan-capabilities">Force Rescan</button>
-          <button id="latest-capabilities">Latest Manifest</button>
-          <pre id="cap-output"></pre>
-        </article>
+          <div class="actions">
+            <button id="rescan-capabilities">Force Rescan</button>
+            <button id="latest-capabilities">Latest Manifest</button>
+          </div>
+          <pre id="cap-output">No actions yet.</pre>
+        </section>
 
-        <article class="card">
+        <section id="settings" class="card">
           <h3>Settings</h3>
-          <button id="save-settings">Save Outlook + Manual Login Rule</button>
-          <button id="get-settings">Read Settings</button>
-          <pre id="settings-output"></pre>
-        </article>
-      </section>
-    </main>
+          <div class="actions">
+            <button id="save-settings">Save Outlook + Manual Login Rule</button>
+            <button id="get-settings">Read Settings</button>
+          </div>
+          <pre id="settings-output">No actions yet.</pre>
+        </section>
+      </main>
+    </div>
 
     <script src="/static/js/app.js"></script>
   </body>
