@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ARX Agent Control Plane</title>
+    <link rel="stylesheet" href="/static/css/app.css" />
+  </head>
+  <body>
+    <header>
+      <h1>ARX Agent Control Plane</h1>
+      <p>Web UI for inbox, jobs, approvals, capabilities, audit, and settings.</p>
+    </header>
+
+    <main>
+      <section class="card">
+        <h2>Quick Start</h2>
+        <ol>
+          <li>Connect Outlook in Settings.</li>
+          <li>Keep LearnAlyze login manual (required).</li>
+          <li>Ingest an email and triage it into a task.</li>
+          <li>Plan and run a job with policy/approval guardrails.</li>
+        </ol>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h3>Inbox</h3>
+          <button id="seed-email">Seed Demo Email</button>
+          <button id="triage-latest">Triage Latest Email</button>
+          <pre id="emails-output"></pre>
+        </article>
+
+        <article class="card">
+          <h3>Jobs</h3>
+          <button id="plan-latest">Plan Job for Latest Task</button>
+          <button id="list-jobs">Refresh Jobs</button>
+          <pre id="jobs-output"></pre>
+        </article>
+
+        <article class="card">
+          <h3>Capabilities</h3>
+          <button id="rescan-capabilities">Force Rescan</button>
+          <button id="latest-capabilities">Latest Manifest</button>
+          <pre id="cap-output"></pre>
+        </article>
+
+        <article class="card">
+          <h3>Settings</h3>
+          <button id="save-settings">Save Outlook + Manual Login Rule</button>
+          <button id="get-settings">Read Settings</button>
+          <pre id="settings-output"></pre>
+        </article>
+      </section>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>

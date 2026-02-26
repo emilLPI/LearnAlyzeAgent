@@ -1,0 +1,41 @@
+:root {
+  color-scheme: light dark;
+  font-family: Inter, system-ui, Arial, sans-serif;
+}
+body {
+  margin: 0;
+  padding: 1.5rem;
+  background: #0b1020;
+  color: #e8ecff;
+}
+header {
+  margin-bottom: 1rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.card {
+  background: #141b34;
+  border: 1px solid #2a355f;
+  border-radius: 12px;
+  padding: 1rem;
+}
+button {
+  margin: 0.2rem 0.2rem 0.4rem 0;
+  background: #3a63ff;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+}
+pre {
+  white-space: pre-wrap;
+  font-size: 0.8rem;
+  background: #0c1328;
+  border-radius: 8px;
+  padding: 0.7rem;
+  min-height: 120px;
+}
