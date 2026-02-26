@@ -33,8 +33,9 @@ uvicorn app.main:app --reload
 ## LearnAlyze login og credentials
 
 - I UI findes en **LearnAlyze Login Window** sektion.
-- Du kan åbne `https://app-eu-learnalyze.azurewebsites.net/` i nyt vindue/tab direkte derfra.
-- Du kan indtaste credentials i UI-felter og gemme dem i **browser session storage** (kun lokalt i din session) som hjælp til manuel login.
+- LearnAlyze embeds ikke længere i iframe (for at undgå browser-fejlsiden), fordi target-sitet blokerer framing via sikkerhedsheaders.
+- Du åbner i stedet `https://app-eu-learnalyze.azurewebsites.net/` i nyt vindue/tab direkte fra UI.
+- Du kan gemme **email** i browser session storage som login-hjælp (password gemmes ikke).
 - Kravet fastholdes: LearnAlyze login er stadig manuelt (`require_manual_learnalyze_login=true`).
 
 ## Agent learning/selv-opdagelse

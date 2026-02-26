@@ -61,13 +61,14 @@
             <button id="clear-local-credentials" class="secondary">Clear credentials</button>
           </div>
           <p id="learnalyze-status" class="subtle">No credentials saved yet.</p>
-          <iframe
-            id="learnalyze-iframe"
-            title="LearnAlyze"
-            src="https://app-eu-learnalyze.azurewebsites.net/"
-            referrerpolicy="no-referrer"
-          ></iframe>
-          <p class="subtle">If the embedded window is blocked by browser security (X-Frame-Options), use "Open LearnAlyze Login Window".</p>
+          <div class="embed-blocked-panel">
+            <strong>Why there is no embedded window</strong>
+            <p>
+              LearnAlyze sets security headers (X-Frame-Options/CSP frame-ancestors) that block embedding in iframes.
+              To prevent the browser error page, this control plane always opens LearnAlyze in a separate tab/window.
+            </p>
+            <a class="external-link" href="https://app-eu-learnalyze.azurewebsites.net/" target="_blank" rel="noopener noreferrer">Open LearnAlyze directly</a>
+          </div>
         </section>
 
         <section id="inbox" class="card">

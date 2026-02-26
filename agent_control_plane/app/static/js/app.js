@@ -46,36 +46,31 @@ async function refreshLearningInsights() {
 
 function loadCredentialInputs() {
   const email = sessionStorage.getItem("learnalyze_email") || "";
-  const password = sessionStorage.getItem("learnalyze_password") || "";
   $("learnalyze-email").value = email;
-  $("learnalyze-password").value = password;
   $("learnalyze-status").textContent = email
-    ? `Credentials loaded for ${email} (saved in browser session only).`
-    : "No credentials saved yet.";
+    ? `Email loaded for ${email} (saved in browser session only).`
+    : "No email saved yet.";
 }
 
 $("save-local-credentials").onclick = () => {
   const email = $("learnalyze-email").value.trim();
-  const password = $("learnalyze-password").value;
   sessionStorage.setItem("learnalyze_email", email);
-  sessionStorage.setItem("learnalyze_password", password);
   $("learnalyze-status").textContent = email
-    ? `Credentials saved locally for ${email}. Open LearnAlyze window and log in manually.`
+    ? `Email saved locally for ${email}. Password is never stored. Open LearnAlyze window and log in manually.`
     : "Please enter email first.";
 };
 
 $("clear-local-credentials").onclick = () => {
   sessionStorage.removeItem("learnalyze_email");
-  sessionStorage.removeItem("learnalyze_password");
   $("learnalyze-email").value = "";
   $("learnalyze-password").value = "";
-  $("learnalyze-status").textContent = "Credentials cleared from browser session.";
+  $("learnalyze-status").textContent = "Saved email cleared from browser session.";
 };
 
 $("open-learnalyze-window").onclick = () => {
   window.open("https://app-eu-learnalyze.azurewebsites.net/", "_blank", "noopener,noreferrer");
   $("learnalyze-status").textContent =
-    "LearnAlyze opened in a new tab/window. Log in with your credentials there.";
+    "LearnAlyze opened in a new tab/window. This avoids iframe security blocks.";
 };
 
 $("seed-email").onclick = async () => {

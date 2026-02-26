@@ -65,3 +65,10 @@ def test_capability_insights_endpoint():
     assert after.status_code == 200
     assert after.json()["total_snapshots"] >= 1
     assert "learned_actions" in after.json()
+
+
+def test_learnalyze_embed_is_not_used():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert "Open LearnAlyze directly" in response.text
+    assert "<iframe" not in response.text

@@ -101,12 +101,28 @@ input {
   border-radius: 8px;
   padding: .55rem .65rem;
 }
-#learnalyze-iframe {
-  width: 100%;
-  min-height: 480px;
-  border: 1px solid #2a376e;
+
+.embed-blocked-panel {
+  border: 1px solid #2d3a73;
+  background: #121b3d;
   border-radius: 10px;
-  background: #fff;
+  padding: .85rem;
+  display: grid;
+  gap: .5rem;
+  color: #d7e8ff;
+}
+.embed-blocked-panel p {
+  margin: 0;
+  color: var(--muted);
+}
+.external-link {
+  width: fit-content;
+  text-decoration: none;
+  color: white;
+  background: linear-gradient(135deg, var(--accent), #4e6eff);
+  padding: .45rem .7rem;
+  border-radius: 8px;
+  border: 1px solid #5b78ff;
 }
 
 .timeline {
