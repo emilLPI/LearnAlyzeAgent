@@ -1,0 +1,14 @@
+{
+  "name": "learnalyze-agent-repo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Root npm entrypoint for LearnAlyzeAgent",
+  "workspaces": [
+    "agent_control_plane"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace agent_control_plane",
+    "start": "npm run start --workspace agent_control_plane",
+    "ui:install": "npm install --workspace agent_control_plane"
+  }
+}

@@ -8,6 +8,19 @@ Nu kan du både:
 
 ## Kør webapp med npm
 
+### Fra repo-roden (fix for ENOENT/package.json)
+
+Hvis du står i repo-roden (som i din PowerShell fejl), kan du nu køre direkte:
+
+```bash
+npm install
+npm run dev
+```
+
+Dette bruger root `package.json` og starter UI-workspace automatisk.
+
+### Direkte i app-mappen
+
 ```bash
 cd agent_control_plane
 npm install
