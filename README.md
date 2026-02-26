@@ -18,6 +18,3 @@ cd agent_control_plane
 npm install
 npm run dev
 ```
-
-
-Se også `read.md` for en kort fejlfindingsguide til `npm install`/`npm run dev`.
